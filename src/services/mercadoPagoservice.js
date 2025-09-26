@@ -11,18 +11,25 @@ async function createPreference(data){
     console.log('estamos revisando la data linea 11:', data)
     // Creo la preferencia de MP usando la data que me llega en "data"
     const dataPreference = {
-        items: [{
-            title: data.items[0].title,
-            quantity: data.items[0].quantity,
+        items: data.map( i => ({
+            title: i.name,
+            quantity: i.quantity,
             currency_id: 'ARS',
-            unit_price: data.items[0].price
-            }],
+            unit_price: i.price
+        })),
         back_urls: {
             success: "https://www.tu-sitio/success",
             failure: "https://www.tu-sitio/failure",
             pending: "https://www.tu-sitio/pending"
             },
-        auto_return: 'approved'
+        auto_return: 'approved',
+        payment_methods: {
+            excluded_payment_types: [
+                { id: "ticket" },
+                { id: "bank_transfer"}
+            ],
+            installments: 1,
+        },
     };
 
     console.log('estamos revisando la generacion de la nueva preferencia 28:', dataPreference)

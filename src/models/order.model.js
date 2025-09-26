@@ -5,6 +5,7 @@ const orderSchema = new Schema({
     products: { type: Array},
     total: { type: Number },
     user: { type: String },
+    email: { type: String},
     status: {
         type: String,
         enum: ["pending", "completed", "cancelled"],
