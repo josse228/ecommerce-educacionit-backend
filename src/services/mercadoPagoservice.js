@@ -18,9 +18,9 @@ async function createPreference(data){
             unit_price: i.price
         })),
         back_urls: {
-            success: "https://www.tu-sitio/success",
-            failure: "https://www.tu-sitio/failure",
-            pending: "https://www.tu-sitio/pending"
+            success: "https://ecommerce-educacionit.onrender.com/success",
+            failure: "https://ecommerce-educacionit.onrender.com/failure",
+            pending: "https://ecommerce-educacionit.onrender.com/pending"
             },
         auto_return: 'approved',
         payment_methods: {
