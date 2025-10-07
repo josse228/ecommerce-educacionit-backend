@@ -99,6 +99,7 @@ async function handleSendConfirmationPurchase( req, res ){
             return res.status(500).send({ message: "Firma invalida"});
         } 
 
+        console.log("DATAID", dataID)
         const paymentInfo = await client.payment.get(dataID);
         if ( paymentInfo && 
             dataBody.type === 'payment' &&
