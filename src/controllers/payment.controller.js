@@ -92,6 +92,7 @@ async function handleSendConfirmationPurchase( req, res ){
             .update(manifest)
             .digest('hex')
 
+        console.log("HMAC y HASH" , hmac, hash)
         if ( hmac !== hash ) {
             //HMAC varificacion
             console.log('Varificacion HMAC fallida');
