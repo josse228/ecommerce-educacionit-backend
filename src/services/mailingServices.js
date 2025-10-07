@@ -10,13 +10,18 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-function sendConfirmationPurchase(to, name, content){
+function sendConfirmationPurchase(to, content){
+
+    console.log("ME ESTAN INVOCANDO AL SERVICIO MAILING", to, content)
+
     let message = {
-        from: proccess.env.GMAIL_USER,
+        from: process.env.GMAIL_USER,
         to,
         subject: "Confirmacion de Compra",
         text: "Confirmacion de compra",
-        html: `${name} y ${content}`
+        html: `
+            <p> Hola ${to}. Gracias por tu compra. Tus productos son: ${content}</p>
+        `
     }
     return transporter.sendMail(message)
 }
