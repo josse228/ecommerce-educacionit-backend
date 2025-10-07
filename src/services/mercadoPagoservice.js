@@ -23,7 +23,7 @@ async function createPreference(data){
             pending: "https://ecommerce-educacionit.onrender.com/"
             },
         auto_return: 'approved',
-        notification_url: "",
+        notification_url: "https://ecommerce-educacionit-backend.onrender.com/webhookmp",
         payment_methods: {
             excluded_payment_types: [
                 { id: "ticket" },
