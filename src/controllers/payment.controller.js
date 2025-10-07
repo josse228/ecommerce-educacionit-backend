@@ -83,7 +83,7 @@ async function handleSendConfirmationPurchase( req, res ){
         const secret = process.env.MP_SECRET_KEY
 
         //Generar el manifest (uso el template proporciano por MP)
-        const manifest = `id:${dataID};request-id:${requestIdDataHeader};ts:${ts}`
+        const manifest = `id:${dataID};request-id:${requestIdDataHeader};ts:${ts};`
         console.log("MANIFEST", manifest)
 
         // Calcular un HMAC en hexadecimal utilizando la clave secreta
