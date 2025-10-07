@@ -3,6 +3,7 @@ const createPreference = require('../services/mercadoPagoservice')
 const { sendConfirmationPurchase } = require("../services/mailingServices")
 const { client } = require('../config/mercadopagoConfig')
 const crypto = require('crypto')
+const axios = require('axios')
 
 async function handlePaymentMercadoPago( req, res ){
 
@@ -102,32 +103,12 @@ async function handleSendConfirmationPurchase( req, res ){
         // ✅ RESPONDER PRIMERO
         res.status(200).send({ message: 'Notificación recibida' });
 
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
         // 🔄 PROCESAR EN SEGUNDO PLANO
-        setImmediate(async () => {
-            try {
-                const paymentInfo = await client.payment.get(dataID);
-
-                if (
-                    body.type === 'payment' &&
-                    paymentInfo &&
-                    paymentInfo.status === 'approved'
-                ) {
-                    const email = paymentInfo.payer?.email;
-                    const items = paymentInfo.additional_info?.items;
-
-                await sendConfirmationPurchase(email, items);
-                console.log('Email de confirmación enviado');
-                } else {
-                    console.log('Pago no aprobado o tipo incorrecto');
-                }
-            } catch (err) {
-                console.error('Error al consultar el pago:', err);
-            }
+        setImmediate( () => {
+            handleMercadoPagoNotification(dataBody)
         });
-
-        return res.status(200).send({
-            message: "El pago se realizo exitosamente"
-        })
 
     } catch( err ){
         console.log(err);
@@ -135,6 +116,43 @@ async function handleSendConfirmationPurchase( req, res ){
             message: 'Hubo un error enviando el mail'
         })
     }
+}
+
+async function handleMercadoPagoNotification(body){
+
+    const id = body.data.id
+
+    if(!id) return;
+
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    try {
+        const response = await axios.get(`https://api.mercadopago.com/v1/payments/${id}`, {
+            headers: {
+                Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`
+            }
+        });
+
+        const paymentInfo = response.data
+
+            if (
+                body.type === 'payment' &&
+                paymentInfo &&
+                paymentInfo.status === 'approved'
+            ) {
+                const email = paymentInfo.payer?.email;
+                const items = paymentInfo.additional_info?.items;
+
+            await sendConfirmationPurchase(email, items);
+            console.log('Email de confirmación enviado');
+        } else {
+            console.log('Pago no aprobado o tipo incorrecto');
+        }
+
+    } catch (err) {
+        console.error('Error al consultar el pago:', err);
+    }
+
 }
 
 module.exports = { handlePaymentMercadoPago, handleSendConfirmationPurchase }
