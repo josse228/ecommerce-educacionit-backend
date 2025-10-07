@@ -37,8 +37,11 @@ async function handleSendConfirmationPurchase( req, res ){
     
     try {
 
+        console.log("Recibo el WEBHOOK con MP")
         const dataBody = req.body;
         const dataHeader = req.headers;
+
+        console.log("DATA Y HEADER ---------------------", dataBody, dataHeader)
 
         //Saco la clave secreta y el requestId de la notificacion del webhook
         const secretDataHeader = dataHeader['x-signature'];
