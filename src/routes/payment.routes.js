@@ -1,11 +1,11 @@
 const express = require('express');
-const routes = express.Router();
+const router = express.Router();
 
 const { handlePaymentMercadoPago, handleSendConfirmationPurchase } = require('../controllers/payment.controller');
 
 
-routes.post('/payments', handlePaymentMercadoPago);
+router.post('/payments', handlePaymentMercadoPago);
 
-routes.post('/webhookmp', handleSendConfirmationPurchase)
+router.post('/webhookmp', handleSendConfirmationPurchase)
 
-module.exports = routes
+module.exports = router
