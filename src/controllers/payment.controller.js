@@ -99,7 +99,7 @@ async function handleSendConfirmationPurchase( req, res ){
             return res.status(500).send({ message: "Firma invalida"});
         } 
 
-        const paymentInfo = await mercadopago.Payment.findById(dataID);
+        const paymentInfo = await mercadopago.payment.get(dataID);
         if ( paymentInfo && 
             dataBody.type === 'payment' &&
             paymentInfo.body.status === 'approved') {
