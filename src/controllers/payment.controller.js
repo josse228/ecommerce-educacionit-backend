@@ -47,12 +47,19 @@ async function handleSendConfirmationPurchase( req, res ){
         const secretDataHeader = dataHeader['x-signature'];
         const requestIdDataHeader = dataHeader['x-request-id'];
 
+        console.log("SECRETDATAHEADER", secretDataHeader)
+        console.log("requestIDHeader", requestIdDataHeader)
+
         //Obteniendo los QueryParams de la URL
         const urlParams = new URLSearchParams(req.url.split('?')[1]);
         const dataID = urlParams.get('data.id');
 
+        console.log("URLPARAMS", urlParams)
+        console.log("DataID", dataID)
+
         // Separo los valores de la propiedad 'x-signature' con split
         const parts = secretDataHeader.split(",");
+        console.log("PARTS", parts)
         //Inicializo los valores de las variables que tengo en const = parts
         let ts;
         let hash;
@@ -70,20 +77,22 @@ async function handleSendConfirmationPurchase( req, res ){
                 }
             }
         })
+        console.log("TS Y HASCH", ts, hash)
 
         // Clave secreta de usuario/aplicacion de mercado pago developers
         const secret = process.env.MP_SECRET_KEY
 
         //Generar el manifest (uso el template proporciano por MP)
         const manifest = `id:${dataID};request-id:${requestIdDataHeader};ts:${ts}`
+        console.log("MANIFEST", manifest)
 
         // Calcular un HMAC en hexadecimal utilizando la clave secreta
-        const hmac = crypto.createHmac('sha256', secret).update(manifest)
+        const hmac = crypto
+            .createHmac('sha256', secret)
+            .update(manifest)
+            .digest('hex')
 
-        // Obtener un hash como un string Hexadecimal
-        const sha = hmac.digest('hex')
-
-        if ( sha !== hash ) {
+        if ( hmac !== hash ) {
             //HMAC varificacion
             console.log('Varificacion HMAC fallida');
             return res.status(500).send({ message: "Firma invalida"});
