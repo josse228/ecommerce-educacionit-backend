@@ -122,9 +122,11 @@ async function handleMercadoPagoNotification(body){
 
     const id = body.data.id
 
+    console.log("ESTE ES EL ID------------", id)
+
     if(!id) return;
 
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await new Promise(resolve => setTimeout(resolve, 5000))
 
     try {
         const response = await axios.get(`https://api.mercadopago.com/v1/payments/${id}`, {
