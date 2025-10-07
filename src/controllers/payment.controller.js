@@ -1,8 +1,7 @@
 require("dotenv").config();
 const createPreference = require('../services/mercadoPagoservice')
 const { sendConfirmationPurchase } = require("../services/mailingServices")
-const { mercadopago } = require('../config/mercadopagoConfig')
-const mercadopagoModule = require('mercadopago');
+const { client } = require('../config/mercadopagoConfig')
 const crypto = require('crypto')
 
 async function handlePaymentMercadoPago( req, res ){
@@ -100,7 +99,7 @@ async function handleSendConfirmationPurchase( req, res ){
             return res.status(500).send({ message: "Firma invalida"});
         } 
 
-        const paymentInfo = await mercadopagoModule.payment.get(dataID);
+        const paymentInfo = await client.payment.get(dataID);
         if ( paymentInfo && 
             dataBody.type === 'payment' &&
             paymentInfo.body.status === 'approved') {
