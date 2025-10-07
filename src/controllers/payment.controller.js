@@ -99,17 +99,31 @@ async function handleSendConfirmationPurchase( req, res ){
             return res.status(500).send({ message: "Firma invalida"});
         } 
 
-        console.log("DATAID", dataID)
-        const paymentInfo = await client.payment.get(dataID);
-        if ( paymentInfo && 
-            dataBody.type === 'payment' &&
-            paymentInfo.body.status === 'approved') {
-                console.log("ESTOY APROBANDO LA TRX--------------------------------------------")
-                const email = paymentInfo.body.payer?.email;
-                const items = paymentInfo.body.additional_info?.items;
+        // ✅ RESPONDER PRIMERO
+        res.status(200).send({ message: 'Notificación recibida' });
+
+        // 🔄 PROCESAR EN SEGUNDO PLANO
+        setImmediate(async () => {
+            try {
+                const paymentInfo = await client.payment.get(dataID);
+
+                if (
+                    body.type === 'payment' &&
+                    paymentInfo &&
+                    paymentInfo.status === 'approved'
+                ) {
+                    const email = paymentInfo.payer?.email;
+                    const items = paymentInfo.additional_info?.items;
 
                 await sendConfirmationPurchase(email, items);
-        }
+                console.log('Email de confirmación enviado');
+                } else {
+                    console.log('Pago no aprobado o tipo incorrecto');
+                }
+            } catch (err) {
+                console.error('Error al consultar el pago:', err);
+            }
+        });
 
         return res.status(200).send({
             message: "El pago se realizo exitosamente"
