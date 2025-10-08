@@ -189,7 +189,7 @@ async function handleMercadoPagoNotification(body){
 
             await sendConfirmationPurchase(email, items);
             console.log('Email de confirmación enviado');
-            return
+            
         } else {
             console.log('Pago no aprobado o tipo incorrecto');
         }

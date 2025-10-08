@@ -26,9 +26,12 @@ async function sendConfirmationPurchase(to, content){
         </ul>
         `
     }
+
+    console.log(message)
+
     try {
-        const info = await transporter.sendMail(message);
-        console.log("Mail enviado:", info.response);
+    
+        return transporter.sendMail(message);
     } catch (err) {
         console.error("Error al enviar el mail:", err);
     }
