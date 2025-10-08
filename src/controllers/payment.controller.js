@@ -52,11 +52,13 @@ async function handleSendConfirmationPurchase( req, res ){
         console.log("requestIDHeader", requestIdDataHeader)
 
         //Obteniendo los QueryParams de la URL
+        const urlparamm = req.url;
         const urlParams = new URLSearchParams(req.url.split('?')[1]);
         const dataID = urlParams.get('id');
 
+        console.log("URLPARAMSNATIVO", urlparamm)
         console.log("URLPARAMS", urlParams)
-        console.log("DataID", dataID, dataBody.data.id)
+        console.log("DataID", dataID)
 
         // Separo los valores de la propiedad 'x-signature' con split
         const parts = secretDataHeader.split(",");
