@@ -1,6 +1,6 @@
 require("dotenv").config();
 const createPreference = require('../services/mercadoPagoservice')
-const { sendConfirmationPurchase } = require("../services/mailingServices")
+const { sendConfirmationPurchase } = require("../services/mailingServicesNONE")
 const { client } = require('../config/mercadopagoConfig')
 const crypto = require('crypto')
 const axios = require('axios')
