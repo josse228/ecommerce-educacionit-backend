@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-function sendConfirmationPurchase(to, content){
+async function sendConfirmationPurchase(to, content){
 
     console.log("ME ESTAN INVOCANDO AL SERVICIO MAILING", to, content)
 
@@ -20,10 +20,18 @@ function sendConfirmationPurchase(to, content){
         subject: "Confirmacion de Compra",
         text: "Confirmacion de compra",
         html: `
-            <p> Hola ${to}. Gracias por tu compra. Tus productos son: ${content}</p>
+        <p>Hola ${to}. Gracias por tu compra.</p>
+        <ul>
+            ${content.map(item => `<li>${item.name} - ${item.quantity}</li>`).join('')}
+        </ul>
         `
     }
-    return transporter.sendMail(message)
+    try {
+        const info = await transporter.sendMail(message);
+        console.log("Mail enviado:", info.response);
+    } catch (err) {
+        console.error("Error al enviar el mail:", err);
+    }
 }
 
 module.exports = { sendConfirmationPurchase }
