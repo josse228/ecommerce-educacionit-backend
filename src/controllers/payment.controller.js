@@ -124,14 +124,16 @@ async function handleSendConfirmationPurchase( req, res ){
     }
 }
 
-let orderId = null;
+let orderId;
 
 function getOrderId(id){
 
     let orderId = id;
-
+    console.log("ORDER ID-------------------------", orderId)
     return orderId
 }
+
+console.log("ORDER ID-------------------------", orderId)
 
 async function handleMercadoPagoNotification(body){
 
@@ -162,7 +164,7 @@ async function handleMercadoPagoNotification(body){
             ) {
 
                 const getOrder = await Order.findById(orderId);
-
+                console.log("ORDER ID-------------------------", getOrder)
                 const email = getOrder.email;
                 const items = getOrder.products
 
