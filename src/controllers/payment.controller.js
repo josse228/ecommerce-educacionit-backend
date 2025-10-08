@@ -129,11 +129,11 @@ let orderId;
 function getOrderId(id){
 
     let orderId = id;
-    console.log("ORDER ID-------------------------", orderId)
+    console.log("ORDER ID------------------------???-", orderId)
     return orderId
 }
 
-console.log("ORDER ID-------------------------", orderId)
+console.log("ORDER ID-------------¿¿¿------------", orderId)
 
 async function handleMercadoPagoNotification(body){
 
