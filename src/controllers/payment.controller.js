@@ -54,7 +54,7 @@ async function handleSendConfirmationPurchase( req, res ){
         //Obteniendo los QueryParams de la URL
         const urlparamm = req.url;
         const urlParams = new URLSearchParams(req.url.split('?')[1]);
-        const dataID = urlParams.get('id');
+        const dataID = urlParams.get('data.id');
 
         console.log("URLPARAMSNATIVO", urlparamm)
         console.log("URLPARAMS", urlParams)
