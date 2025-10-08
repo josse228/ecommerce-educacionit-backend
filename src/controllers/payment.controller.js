@@ -138,7 +138,10 @@ async function handleMercadoPagoNotification(body){
             }
         });
 
+        console.log("RESSPONNNSEEE", response)
         const paymentInfo = response.data
+
+        console.log("PAYMENT INFO", paymentInfo)
 
             if (
                 body.type === 'payment' &&
