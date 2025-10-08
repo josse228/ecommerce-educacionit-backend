@@ -97,7 +97,7 @@ async function handleSendConfirmationPurchase( req, res ){
         if ( hmac !== hash ) {
             //HMAC varificacion
             console.log('Varificacion HMAC fallida');
-            return res.status(500).send({ message: "Firma invalida"});
+            return res.status(200).send({ message: "Firma invalida"});
         } 
 
         // ✅ RESPONDER PRIMERO
