@@ -52,11 +52,12 @@ async function handleSendConfirmationPurchase( req, res ){
         console.log("requestIDHeader", requestIdDataHeader)
 
         //Obteniendo los QueryParams de la URL
-        const urlparamm = req.url;
         const urlParams = new URLSearchParams(req.url.split('?')[1]);
-        const dataID = urlParams.get('data.id');
+        const idFromUrl = urlParams.get('data.id') || urlParams.get('id');
+        const idFromBody = req.body?.data?.id || req.body?.id;
 
-        console.log("URLPARAMSNATIVO", urlparamm)
+        const dataID = idFromBody || idFromUrl;
+
         console.log("URLPARAMS", urlParams)
         console.log("DataID", dataID)
 
