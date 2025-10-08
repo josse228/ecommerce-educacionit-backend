@@ -11,6 +11,8 @@ const orderSchema = new Schema({
         enum: ["pending", "completed", "cancelled"],
         default: "pending"
     },
+    mercadoPagoPreferenceId: { type: String },
+    mercadoPagoPaymentId: { type: String },
     createdAt: {
         type: Date,
         default: Date.now
