@@ -1,17 +1,20 @@
 const nodemailer = require('nodemailer');
 
-// Creamos el transporter del Servicio de Mail
 
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS
-    }
-})
 
 async function sendConfirmationPurchase(to, content){
 
+
+    // Creamos el transporter del Servicio de Mail
+
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_PASS
+        }
+    })
+    
     console.log("ME ESTAN INVOCANDO AL SERVICIO MAILING", to, content)
 
     let message = {
@@ -30,8 +33,9 @@ async function sendConfirmationPurchase(to, content){
     console.log(message)
 
     try {
-    
-        return transporter.sendMail(message);
+        
+        const info = await transporter.sendMail(message);
+        console.log("Mail enviado:", info.response);
     } catch (err) {
         console.error("Error al enviar el mail:", err);
     }
