@@ -1,5 +1,6 @@
 const Order = require("../models/order.model");
 const mongoose = require("mongoose");
+const { getOrderId } = require("./payment.controller")
 
 
 async function getOrders( req, res ){
@@ -28,6 +29,10 @@ async function createOrder( req, res ){
         const order = new Order(req.body);
 
         const newOrder = await order.save();
+
+        console.log("Este es el ID de la orden", newOrder._id)
+
+        getOrderId(newOrder._id)
 
         return res.status(200).send({
             message: "Se creo la orden correctamente",

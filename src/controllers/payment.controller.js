@@ -4,6 +4,7 @@ const { sendConfirmationPurchase } = require("../services/mailingServices")
 const { client } = require('../config/mercadopagoConfig')
 const crypto = require('crypto')
 const axios = require('axios')
+const Order = require("../models/order.model");
 
 async function handlePaymentMercadoPago( req, res ){
 
@@ -113,12 +114,23 @@ async function handleSendConfirmationPurchase( req, res ){
             handleMercadoPagoNotification(dataBody)
         });
 
+        return
+
     } catch( err ){
         console.log(err);
         return res.status(500).send({
             message: 'Hubo un error enviando el mail'
         })
     }
+}
+
+let orderId = null;
+
+function getOrderId(id){
+
+    let orderId = id;
+
+    return orderId
 }
 
 async function handleMercadoPagoNotification(body){
@@ -148,14 +160,20 @@ async function handleMercadoPagoNotification(body){
                 paymentInfo &&
                 paymentInfo.status === 'approved'
             ) {
-                const email = paymentInfo.payer?.email;
-                const items = paymentInfo.additional_info?.items;
+
+                const getOrder = await Order.findById(orderId);
+
+                const email = getOrder.email;
+                const items = getOrder.products
 
             await sendConfirmationPurchase(email, items);
             console.log('Email de confirmación enviado');
+            return
         } else {
             console.log('Pago no aprobado o tipo incorrecto');
         }
+
+        return
 
     } catch (err) {
         console.error('Error al consultar el pago:', err);
@@ -163,4 +181,5 @@ async function handleMercadoPagoNotification(body){
 
 }
 
-module.exports = { handlePaymentMercadoPago, handleSendConfirmationPurchase }
+
+module.exports = { handlePaymentMercadoPago, handleSendConfirmationPurchase, getOrderId }
