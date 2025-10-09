@@ -19,9 +19,9 @@ async function handlePaymentMercadoPago( req, res ){
         const preference = await createPreference(items);
         console.log('Este es el controllador de payments linea:8', preference)
 
-        await Order.findByIdAndUpdate(req.body.orderId, {
-        mercadoPagoPreferenceId: preference.id
-        });
+        // await Order.findByIdAndUpdate(req.body.orderId, {
+        // mercadoPagoPreferenceId: preference.id
+        // });
 
 
         res.status(200).send({
@@ -128,18 +128,18 @@ async function handleSendConfirmationPurchase( req, res ){
     }
 }
 
-let orderId;
+// let orderId;
 
-function getOrderId(id){
+// async function getOrderId(id){
 
-    let orderId = id;
-    console.log("ORDER ID------------------------???-", orderId)
-    return orderId
-}
+//     let orderId = id;
+//     console.log("ORDER ID------------------------???-", orderId)
+//     return orderId
+// }
 
-orderId = getOrderId();
+// orderId = getOrderId();
 
-console.log("ORDER ID-------------¿¿¿------------", orderId)
+// console.log("ORDER ID-------------¿¿¿------------", orderId)
 
 async function handleMercadoPagoNotification(body){
 
@@ -172,16 +172,14 @@ async function handleMercadoPagoNotification(body){
                 const preferenceId = paymentInfo.preference_id;
 
                 // Primero actualizás la orden
-                await Order.updateOne(
+                const updatedOrder = await Order.findOneAndUpdate(
                 { mercadoPagoPreferenceId: preferenceId },
                 {
                     mercadoPagoPaymentId: paymentInfo.id,
                     status: 'completed'
-                }
+                },
+                { new: true }
                 );
-
-                // Luego la buscás actualizada
-                const updatedOrder = await Order.findOne({ mercadoPagoPreferenceId: preferenceId })
 
                 if (!updatedOrder) {
                     console.log('No se encontró la orden para el preference_id:', preferenceId);

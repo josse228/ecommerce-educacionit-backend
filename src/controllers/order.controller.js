@@ -30,10 +30,10 @@ async function createOrder( req, res ){
 
         const newOrder = await order.save();
 
-        const orderId = newOrder._id
-        console.log("Este es el ID de la orden", orderId.toString())
+        // const orderId = newOrder._id
+        // console.log("Este es el ID de la orden", orderId.toString())
 
-        getOrderId(orderId.toString())
+        // getOrderId(orderId.toString())
 
         return res.status(200).send({
             message: "Se creo la orden correctamente",
