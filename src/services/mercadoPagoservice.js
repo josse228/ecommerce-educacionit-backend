@@ -20,7 +20,7 @@ async function createPreference(data){
         back_urls: {
             success: "https://ecommerce-educacionit.onrender.com/confirmationPurchase",
             failure: "https://ecommerce-educacionit.onrender.com/checkout",
-            pending: "https://ecommerce-educacionit.onrender.com/checkout"
+            pending: "https://ecommerce-educacionit.onrender.com"
             },
         auto_return: 'approved',
         notification_url: "https://ecommerce-educacionit-backend.onrender.com/webhookmp",

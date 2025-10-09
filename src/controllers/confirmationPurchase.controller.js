@@ -5,6 +5,7 @@ async function handleConfirmationPurchase( req, res ){
 
     try{
 
+        console.log("INVOCANDO LA CONFIRMACION DE COMPRA", req)
         const { collection_id } = req.query;
 
 
@@ -12,6 +13,8 @@ async function handleConfirmationPurchase( req, res ){
             mercadoPagoPaymentId: collection_id,
             status: "completed" // o "approved", según cómo lo guardes
         });
+
+        console.log("ORDEN DE LA BASE", order)
 
         if (!order) {
             return res.status(404).send({ message: "Orden no encontrada o no aprobada" });
