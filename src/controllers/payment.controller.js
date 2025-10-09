@@ -171,19 +171,23 @@ async function handleMercadoPagoNotification(body){
 
                 const preferenceId = paymentInfo.preference_id;
 
-                const updatedOrder = await Order.findOneAndUpdate(
-                    { mercadoPagoPreferenceId: preferenceId },
-                    {
-                        mercadoPagoPaymentId: paymentInfo.id,
-                        status: 'completed'
-                    },
-                    { new: true } // para que devuelva la orden actualizada
+                // Primero actualizás la orden
+                await Order.updateOne(
+                { mercadoPagoPreferenceId: preferenceId },
+                {
+                    mercadoPagoPaymentId: paymentInfo.id,
+                    status: 'completed'
+                }
                 );
+
+                // Luego la buscás actualizada
+                const updatedOrder = await Order.findOne({ mercadoPagoPreferenceId: preferenceId })
 
                 if (!updatedOrder) {
                     console.log('No se encontró la orden para el preference_id:', preferenceId);
                     return;
                 }
+                console.log("Productos que se van a enviar por mail:", updatedOrder.products);
                 const email = updatedOrder.email;
                 const order = updatedOrder.products
 
