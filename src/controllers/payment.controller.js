@@ -146,7 +146,7 @@ async function handleMercadoPagoNotification(body){
                 // Saco el external reference de la respuesta de MP para comparar con el externalreference que se guardo al hacer la preferencia
                 const external_reference = paymentInfo.external_reference;
 
-                console.log("ESTE ES EL COLLECTOR", collectormp)
+                console.log("ESTE ES EL COLLECTOR", external_reference)
 
                 // Busco la orden guardada usando el external_reference y luego actualizo el estado de la orden a "completed"
                 const updatedOrder = await Order.findOneAndUpdate(
