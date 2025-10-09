@@ -24,7 +24,14 @@ app.use(cors())
 app.use("/uploads", express.static(path.join(__dirname, 'uploads')));
 
 // hago que mi app use las rutas de mi aplicacion con routes.
-app.use([userRoutes, productRoutes, orderRoutes, paymentRoutes, isHealth])
+app.use([
+    userRoutes, 
+    productRoutes, 
+    orderRoutes, 
+    paymentRoutes, 
+    confirmationPurchase, 
+    isHealth
+])
 
 
 module.exports = app
