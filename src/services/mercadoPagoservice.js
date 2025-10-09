@@ -2,21 +2,22 @@ const { Preference } = require('mercadopago');
 const { client } = require('../config/mercadopagoConfig')
 
 
-async function createPreference(data){
+async function createPreference(dataItems, external_reference){
 
     const preference = new Preference(client)
     console.log('estamos creando la preferencia linea 7:', preference)
 
 
-    console.log('estamos revisando la data linea 11:', data)
+    console.log('estamos revisando la data linea 11:', dataItems)
     // Creo la preferencia de MP usando la data que me llega en "data"
     const dataPreference = {
-        items: data.map( i => ({
+        items: dataItems.map( i => ({
             title: i.name,
             quantity: i.quantity,
             currency_id: 'ARS',
             unit_price: i.price
         })),
+        external_reference: external_reference,
         back_urls: {
             success: "https://ecommerce-educacionit.onrender.com/confirmationPurchase",
             failure: "https://ecommerce-educacionit.onrender.com/checkout",

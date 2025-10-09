@@ -10,9 +10,9 @@ async function handlePaymentMercadoPago( req, res ){
 
     try{
 
-        const { items } = req.body
+        const { items, external_reference } = req.body
 
-        const preference = await createPreference(items);
+        const preference = await createPreference(items, external_reference);
 
         res.status(200).send({
             preference,
@@ -81,7 +81,7 @@ async function handleSendConfirmationPurchase( req, res ){
         console.log("MANIFEST", manifest)
 
         // Calcular un HMAC en hexadecimal utilizando la clave secreta
-        const hmac = crypto
+        let hmac = crypto
             .createHmac('sha256', secret)
             .update(manifest)
             .digest('hex')
@@ -141,14 +141,14 @@ async function handleMercadoPagoNotification(body){
                 paymentInfo &&
                 paymentInfo.status === 'approved'
             ) {
-                // Saco el collector de la respuesta de MP para comparar con el collector que se guardo al hacer la preferencia
-                const collectormp = paymentInfo.collector_id;
+                // Saco el external reference de la respuesta de MP para comparar con el externalreference que se guardo al hacer la preferencia
+                const external_reference = paymentInfo.external_reference;
 
                 console.log("ESTE ES EL COLLECTOR", collectormp)
 
-                // Busco la orden guardada usando el collector y luego actualizo el estado de la orden a "completed"
+                // Busco la orden guardada usando el external_reference y luego actualizo el estado de la orden a "completed"
                 const updatedOrder = await Order.findOneAndUpdate(
-                { collector_id: collectormp },
+                { external_reference: external_reference },
                 {
                     mercadoPagoPaymentId: paymentInfo.id,
                     status: 'completed'
@@ -158,7 +158,7 @@ async function handleMercadoPagoNotification(body){
 
                 //Verifico si no esta creada la orden en la bd
                 if (!updatedOrder) {
-                    console.log('No se encontró la orden para el preference_id:', collectormp);
+                    console.log('No se encontró la orden para el preference_id:', external_reference);
                     return;
                 }
 
