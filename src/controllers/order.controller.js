@@ -29,6 +29,8 @@ async function createOrder( req, res ){
 
         const newOrder = await order.save();
 
+        console.log("SE CREA LA ORDEN", newOrder)
+
         // const orderId = newOrder._id
         // console.log("Este es el ID de la orden", orderId.toString())
 

@@ -169,11 +169,11 @@ async function handleMercadoPagoNotification(body){
                 paymentInfo.status === 'approved'
             ) {
 
-                const preferenceId = paymentInfo.preference_id;
+                const collectormp = paymentInfo.collector_id;
 
                 // Primero actualizás la orden
                 const updatedOrder = await Order.findOneAndUpdate(
-                { mercadoPagoPreferenceId: preferenceId },
+                { collector_id: collectormp },
                 {
                     mercadoPagoPaymentId: paymentInfo.id,
                     status: 'completed'
