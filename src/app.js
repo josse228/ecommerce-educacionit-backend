@@ -9,6 +9,7 @@ const userRoutes = require("./routes/user.routes");
 const productRoutes = require("./routes/product.routes");
 const orderRoutes = require("./routes/order.routes");
 const paymentRoutes = require('./routes/payment.routes');
+const confirmationPurchase = require('./routes/confirmationPurchase.routes')
 const isHealth = require('./routes/health.routes')
 
 // me traigo el modulo de path
