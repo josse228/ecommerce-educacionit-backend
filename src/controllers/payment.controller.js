@@ -10,7 +10,7 @@ async function handlePaymentMercadoPago( req, res ){
 
     try{
 
-        const { items, external_referenceCreate } = req.body
+        const { items, external_reference } = req.body
 
         console.log("BODY", items, external_referenceCreate, req.body)
 
