@@ -133,6 +133,8 @@ async function handleMercadoPagoNotification(body){
         //Repsuesta de MP
         const paymentInfo = response.data
 
+        console.log("ESTE ES EL COLLECTOR", paymentInfo)
+
         //Consulto el estado del pago
             if (
                 body.type === 'payment' &&
@@ -141,6 +143,8 @@ async function handleMercadoPagoNotification(body){
             ) {
                 // Saco el collector de la respuesta de MP para comparar con el collector que se guardo al hacer la preferencia
                 const collectormp = paymentInfo.collector_id;
+
+                console.log("ESTE ES EL COLLECTOR", collectorMP)
 
                 // Busco la orden guardada usando el collector y luego actualizo el estado de la orden a "completed"
                 const updatedOrder = await Order.findOneAndUpdate(
@@ -157,10 +161,11 @@ async function handleMercadoPagoNotification(body){
                     console.log('No se encontró la orden para el preference_id:', collectormp);
                     return;
                 }
-                
+
                 const email = updatedOrder.email;
                 const order = updatedOrder.products
 
+                console.log("EMAIL Y ORDER", email, order)
             await sendConfirmationPurchase(email, order);
             console.log('Email de confirmación enviado');
             
