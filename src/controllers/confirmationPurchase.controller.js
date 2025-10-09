@@ -5,13 +5,17 @@ async function handleConfirmationPurchase( req, res ){
 
     try{
 
-        const order = req.body;
+        const { collection_id } = req.query;
 
-        const urlParams = new URLSearchParams(req.url.split('?')[1]);
-        const collector = urlParams.get('collection_id');
 
-        console.log("COLLECTOR", collector)
-        console.log("ORDEN EN EL REQUEST", order)
+        const order = await Order.findOne({
+            mercadoPagoPaymentId: collection_id,
+            status: "completed" // o "approved", según cómo lo guardes
+        });
+
+        if (!order) {
+            return res.status(404).send({ message: "Orden no encontrada o no aprobada" });
+        }
 
         return res.status(200).send({
             message: 'Respuesta de MP'
