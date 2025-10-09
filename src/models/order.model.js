@@ -12,6 +12,7 @@ const orderSchema = new Schema({
         default: "pending"
     },
     mercadoPagoPreferenceId: { type: String },
+    collector_id: { type: Number },
     mercadoPagoPaymentId: { type: String },
     createdAt: {
         type: Date,
