@@ -12,7 +12,7 @@ async function createPreference(dataItems, external_reference){
     // Creo la preferencia de MP usando la data que me llega en "data"
     const dataPreference = {
         items: dataItems.map( i => ({
-            title: i.name,
+            title: i.title,
             quantity: i.quantity,
             currency_id: 'ARS',
             unit_price: i.price
