@@ -182,7 +182,7 @@ async function handleMercadoPagoNotification(body){
                 );
 
                 if (!updatedOrder) {
-                    console.log('No se encontró la orden para el preference_id:', preferenceId);
+                    console.log('No se encontró la orden para el preference_id:', collectormp);
                     return;
                 }
                 console.log("Productos que se van a enviar por mail:", updatedOrder.products);
