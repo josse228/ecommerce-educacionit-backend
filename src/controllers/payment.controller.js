@@ -10,19 +10,9 @@ async function handlePaymentMercadoPago( req, res ){
 
     try{
 
-        console.log('-------------------------------------------ESTO ES EL REQUEST DESDE EL FRONT', req.body)
-
         const { items } = req.body
 
-        console.log("-------------------------ITEMSSSSS-----", items)
-
         const preference = await createPreference(items);
-        console.log('Este es el controllador de payments linea:8', preference)
-
-        // await Order.findByIdAndUpdate(req.body.orderId, {
-        // mercadoPagoPreferenceId: preference.id
-        // });
-
 
         res.status(200).send({
             preference,
@@ -43,18 +33,15 @@ async function handleSendConfirmationPurchase( req, res ){
     
     try {
 
-        console.log("Recibo el WEBHOOK con MP")
+        //Recibo el HOOK de MP
         const dataBody = req.body;
         const dataHeader = req.headers;
 
-        console.log("DATA Y HEADER ---------------------", dataBody, dataHeader)
 
         //Saco la clave secreta y el requestId de la notificacion del webhook
         const secretDataHeader = dataHeader['x-signature'];
         const requestIdDataHeader = dataHeader['x-request-id'];
 
-        console.log("SECRETDATAHEADER", secretDataHeader)
-        console.log("requestIDHeader", requestIdDataHeader)
 
         //Obteniendo los QueryParams de la URL
         const urlParams = new URLSearchParams(req.url.split('?')[1]);
@@ -63,12 +50,10 @@ async function handleSendConfirmationPurchase( req, res ){
 
         const dataID = idFromBody || idFromUrl;
 
-        console.log("URLPARAMS", urlParams)
-        console.log("DataID", dataID)
 
         // Separo los valores de la propiedad 'x-signature' con split
         const parts = secretDataHeader.split(",");
-        console.log("PARTS", parts)
+
         //Inicializo los valores de las variables que tengo en const = parts
         let ts;
         let hash;
@@ -128,50 +113,36 @@ async function handleSendConfirmationPurchase( req, res ){
     }
 }
 
-// let orderId;
-
-// async function getOrderId(id){
-
-//     let orderId = id;
-//     console.log("ORDER ID------------------------???-", orderId)
-//     return orderId
-// }
-
-// orderId = getOrderId();
-
-// console.log("ORDER ID-------------¿¿¿------------", orderId)
 
 async function handleMercadoPagoNotification(body){
 
     const id = body.data.id
-
-    console.log("ESTE ES EL ID------------", id)
 
     if(!id) return;
 
     await new Promise(resolve => setTimeout(resolve, 5000))
 
     try {
+        //Solicito a MP el estado del pago a traves de su ID
         const response = await axios.get(`https://api.mercadopago.com/v1/payments/${id}`, {
             headers: {
                 Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`
             }
         });
 
-        console.log("RESSPONNNSEEE", response)
+        //Repsuesta de MP
         const paymentInfo = response.data
 
-        console.log("PAYMENT INFO", paymentInfo)
-
+        //Consulto el estado del pago
             if (
                 body.type === 'payment' &&
                 paymentInfo &&
                 paymentInfo.status === 'approved'
             ) {
-
+                // Saco el collector de la respuesta de MP para comparar con el collector que se guardo al hacer la preferencia
                 const collectormp = paymentInfo.collector_id;
 
-                // Primero actualizás la orden
+                // Busco la orden guardada usando el collector y luego actualizo el estado de la orden a "completed"
                 const updatedOrder = await Order.findOneAndUpdate(
                 { collector_id: collectormp },
                 {
@@ -181,11 +152,12 @@ async function handleMercadoPagoNotification(body){
                 { new: true }
                 );
 
+                //Verifico si no esta creada la orden en la bd
                 if (!updatedOrder) {
                     console.log('No se encontró la orden para el preference_id:', collectormp);
                     return;
                 }
-                console.log("Productos que se van a enviar por mail:", updatedOrder.products);
+                
                 const email = updatedOrder.email;
                 const order = updatedOrder.products
 

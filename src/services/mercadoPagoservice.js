@@ -18,9 +18,9 @@ async function createPreference(data){
             unit_price: i.price
         })),
         back_urls: {
-            success: "https://ecommerce-educacionit.onrender.com/",
+            success: "https://ecommerce-educacionit.onrender.com/confirmationPurchase",
             failure: "https://ecommerce-educacionit.onrender.com/checkout",
-            pending: "https://ecommerce-educacionit.onrender.com/"
+            pending: "https://ecommerce-educacionit.onrender.com/checkout"
             },
         auto_return: 'approved',
         notification_url: "https://ecommerce-educacionit-backend.onrender.com/webhookmp",
