@@ -144,7 +144,7 @@ async function handleMercadoPagoNotification(body){
                 // Saco el collector de la respuesta de MP para comparar con el collector que se guardo al hacer la preferencia
                 const collectormp = paymentInfo.collector_id;
 
-                console.log("ESTE ES EL COLLECTOR", collectorMP)
+                console.log("ESTE ES EL COLLECTOR", collectormp)
 
                 // Busco la orden guardada usando el collector y luego actualizo el estado de la orden a "completed"
                 const updatedOrder = await Order.findOneAndUpdate(
@@ -162,6 +162,7 @@ async function handleMercadoPagoNotification(body){
                     return;
                 }
 
+                console.log("ORDEN", updatedOrder)
                 const email = updatedOrder.email;
                 const order = updatedOrder.products
 
