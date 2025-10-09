@@ -205,4 +205,4 @@ async function handleMercadoPagoNotification(body){
 }
 
 
-module.exports = { handlePaymentMercadoPago, handleSendConfirmationPurchase, getOrderId }
+module.exports = { handlePaymentMercadoPago, handleSendConfirmationPurchase }
