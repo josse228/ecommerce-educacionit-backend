@@ -12,9 +12,9 @@ async function handlePaymentMercadoPago( req, res ){
 
         const { items, external_reference } = req.body
 
-        console.log("BODY", items, external_referenceCreate, req.body)
+        console.log("BODY", items, external_reference, req.body)
 
-        const preference = await createPreference(items, external_referenceCreate);
+        const preference = await createPreference(items, external_reference);
 
         res.status(200).send({
             preference,
