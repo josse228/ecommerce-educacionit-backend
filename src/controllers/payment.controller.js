@@ -185,9 +185,9 @@ async function handleMercadoPagoNotification(body){
                     return;
                 }
                 const email = updatedOrder.email;
-                const items = updatedOrder.products
+                const order = updatedOrder.products
 
-            await sendConfirmationPurchase(email, items);
+            await sendConfirmationPurchase(email, order);
             console.log('Email de confirmación enviado');
             
         } else {
