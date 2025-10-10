@@ -5,7 +5,7 @@ async function handleConfirmationPurchase( req, res ){
 
     try{
 
-        console.log("INVOCANDO LA CONFIRMACION DE COMPRA", req)
+        console.log("INVOCANDO LA CONFIRMACION DE COMPRA", req.query)
 
         /*
             collection_id,
@@ -36,6 +36,7 @@ async function handleConfirmationPurchase( req, res ){
         }
 
         return res.status(200).send({
+            order,
             message: 'Respuesta de MP'
         })
 
