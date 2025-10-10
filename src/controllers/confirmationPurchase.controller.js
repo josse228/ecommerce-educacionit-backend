@@ -6,11 +6,26 @@ async function handleConfirmationPurchase( req, res ){
     try{
 
         console.log("INVOCANDO LA CONFIRMACION DE COMPRA", req)
-        const { collection_id } = req.query;
+
+        /*
+            collection_id,
+            collection_status,
+            payment_id,
+            status,
+            external_reference,
+            payment_type,
+            merchant_order_id,
+            preference_id,
+            site_id,
+            processing_mode,
+            merchant_account_id
+        */
+
+        const { external_reference } = req.query;
 
 
         const order = await Order.findOne({
-            mercadoPagoPaymentId: collection_id,
+            external_reference: external_reference,
             status: "completed" // o "approved", según cómo lo guardes
         });
 

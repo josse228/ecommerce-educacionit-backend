@@ -52,6 +52,11 @@ async function handleSendConfirmationPurchase( req, res ){
 
         const dataID = idFromBody || idFromUrl;
 
+        console.log("Este es el ID de la URL ---> ", idFromUrl);
+        console.log("Este es el ID del BODY ----> ", idFromBody);
+
+        console.log("Este es el ID que guardo en la variable ----> ", dataID);
+
 
         // Separo los valores de la propiedad 'x-signature' con split
         const parts = secretDataHeader.split(",");
